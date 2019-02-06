@@ -22,12 +22,12 @@ Details need to be added...
 When a new GRIP pipeline is generated, it will place the following import into
 the _src/main/java/GripPipeline.java_ file:
 
-    `import edu.wpi.first.wpilibj.vision.VisionPipeline;`
+`import edu.wpi.first.wpilibj.vision.VisionPipeline;`
 
 The application will fail to build this way.  The `wpilibj` portion needs to be
 removed, like the following:
 
-    `import edu.wpi.first.vision.VisionPipeline;`
+`import edu.wpi.first.vision.VisionPipeline;`
 
 After which the application will build with the new GRIP pipeline.
 
