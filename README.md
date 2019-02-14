@@ -37,6 +37,12 @@ selected based on the value of the _RPi.cameraForward_ network tables boolean;
 __true__ will pass the forward-facing camera and __false__ will pass the
 rear-facing camera.
 
+The forward-facing camera is rotated 90 degrees before being passed into the
+video stream, compensating for the rotated mounting of the camera.  This allows
+the camera to provide a much longer field of view (in front of the robot) while
+still being able to see right in front of the robot (caused by the altitude of
+the mounting point).
+
 Marker lines are overlayed on the camera stream showing the path the robot will
 travel if moving straight and distance markers for 5', 10', and 15'.
 
