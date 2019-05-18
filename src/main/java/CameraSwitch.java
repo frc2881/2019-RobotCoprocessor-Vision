@@ -72,8 +72,129 @@ public class CameraSwitch {
     Imgproc.warpAffine(mat, mat, rotate, new Size(320, 320));
 
     // Draw distance markers.
-    Imgproc.line(mat, new Point(50, 50), new Point(200, 200),
-                 new Scalar(0, 0, 255), 5);
+    //Imgproc.line(mat, new Point(50, 50), new Point(200, 200),
+    //             new Scalar(0, 0, 255), 5);
+    // Left frame
+    Imgproc.line(mat, new Point(43, 309), new Point(47, 301),
+                 new Scalar(0, 0, 255), 1);
+    Imgproc.line(mat, new Point(47, 301), new Point(91, 301),
+                 new Scalar(0, 0, 255), 1);
+    // Right frame
+    Imgproc.line(mat, new Point(279, 309), new Point(275, 301),
+                 new Scalar(0, 0, 255), 1);
+    Imgproc.line(mat, new Point(275, 301), new Point(231, 301),
+                 new Scalar(0, 0, 255), 1);
+    // Bumper
+    Imgproc.line(mat, new Point(40, 299), new Point(279, 299),
+                 new Scalar(0, 0, 255), 1);
+    // 1"
+    //Imgproc.line(mat, new Point(40, 292), new Point(279, 292),
+    //             new Scalar(0, 255, 0), 1);
+    // 2"
+    //Imgproc.line(mat, new Point(40, 286), new Point(279, 286),
+    //             new Scalar(0, 255, 0), 1);
+    // 3"
+    //Imgproc.line(mat, new Point(41, 280), new Point(279, 280),
+    //             new Scalar(0, 255, 0), 1);
+    // 4"
+    //Imgproc.line(mat, new Point(43, 274), new Point(277, 274),
+    //             new Scalar(0, 255, 0), 1);
+    // 5"
+    //Imgproc.line(mat, new Point(45, 269), new Point(275, 269),
+    //             new Scalar(0, 255, 0), 1);
+    // 6"
+    Imgproc.line(mat, new Point(47, 262), new Point(272, 262),
+                 new Scalar(0, 255, 0), 1);
+    // 7"
+    //Imgproc.line(mat, new Point(49, 258), new Point(270, 258),
+    //             new Scalar(0, 255, 0), 1);
+    // 8"
+    //Imgproc.line(mat, new Point(50, 252), new Point(268, 252),
+    //             new Scalar(0, 255, 0), 1);
+    // 9"
+    //Imgproc.line(mat, new Point(52, 248), new Point(266, 248),
+    //             new Scalar(0, 255, 0), 1);
+    // 10"
+    //Imgproc.line(mat, new Point(53, 243), new Point(264, 243),
+    //             new Scalar(0, 255, 0), 1);
+    // 11"
+    //Imgproc.line(mat, new Point(54, 239), new Point(263, 239),
+    //             new Scalar(0, 255, 0), 1);
+    // 12"
+    Imgproc.line(mat, new Point(56, 233), new Point(261, 233),
+                 new Scalar(0, 255, 0), 1);
+    // 13"
+    //Imgproc.line(mat, new Point(57, 230), new Point(260, 230),
+    //             new Scalar(0, 255, 0), 1);
+    // 14"
+    //Imgproc.line(mat, new Point(58, 225), new Point(258, 225),
+    //             new Scalar(0, 255, 0), 1);
+    // 15"
+    //Imgproc.line(mat, new Point(60, 222), new Point(257, 222),
+    //             new Scalar(0, 255, 0), 1);
+    // 16"
+    //Imgproc.line(mat, new Point(61, 217), new Point(255, 217),
+    //             new Scalar(0, 255, 0), 1);
+    // 17"
+    //Imgproc.line(mat, new Point(62, 214), new Point(253, 214),
+    //             new Scalar(0, 255, 0), 1);
+    // 18"
+    Imgproc.line(mat, new Point(64, 209), new Point(252, 209),
+                 new Scalar(0, 255, 0), 1);
+    // 19"
+    //Imgproc.line(mat, new Point(65, 206), new Point(251, 206),
+    //             new Scalar(0, 255, 0), 1);
+    // 20"
+    //Imgproc.line(mat, new Point(66, 202), new Point(249, 202),
+    //             new Scalar(0, 255, 0), 1);
+    // 21"
+    //Imgproc.line(mat, new Point(67, 199), new Point(248, 199),
+    //             new Scalar(0, 255, 0), 1);
+    // 22"
+    //Imgproc.line(mat, new Point(68, 194), new Point(246, 194),
+    //             new Scalar(0, 255, 0), 1);
+    // 23"
+    //Imgproc.line(mat, new Point(69, 191), new Point(245, 191),
+    //             new Scalar(0, 255, 0), 1);
+    // 24"
+    //Imgproc.line(mat, new Point(70, 188), new Point(244, 188),
+    //             new Scalar(0, 255, 0), 1);
+    // 30"
+    Imgproc.line(mat, new Point(75, 173), new Point(238, 173),
+                 new Scalar(0, 255, 0), 1);
+    // 36"
+    //Imgproc.line(mat, new Point(80, 158), new Point(232, 158),
+    //             new Scalar(0, 255, 0), 1);
+    // 42"
+    //Imgproc.line(mat, new Point(84, 144), new Point(227, 144),
+    //             new Scalar(0, 255, 0), 1);
+    // 48"
+    //Imgproc.line(mat, new Point(88, 132), new Point(223, 132),
+    //             new Scalar(0, 255, 0), 1);
+    // 72"
+    Imgproc.line(mat, new Point(96, 111), new Point(215, 111),
+                 new Scalar(0, 255, 0), 1);
+    // 84"
+    //Imgproc.line(mat, new Point(101, 95), new Point(208, 95),
+    //             new Scalar(0, 255, 0), 1);
+    // 96"
+    //Imgproc.line(mat, new Point(106, 81), new Point(203, 81),
+    //             new Scalar(0, 255, 0), 1);
+    // 108"
+    //Imgproc.line(mat, new Point(111, 70), new Point(198, 70),
+    //             new Scalar(0, 255, 0), 1);
+    // 120"
+    //Imgproc.line(mat, new Point(114, 60), new Point(195, 60),
+    //             new Scalar(0, 255, 0), 1);
+    // 132"
+    //Imgproc.line(mat, new Point(117, 51), new Point(191, 51),
+    //             new Scalar(0, 255, 0), 1);
+    // Left diagonal
+    Imgproc.line(mat, new Point(40, 280), new Point(133, 0),
+                 new Scalar(255, 0, 0), 1);
+    // Right diagonal
+    Imgproc.line(mat, new Point(279, 279), new Point(172, 0),
+                 new Scalar(255, 0, 0), 1);
 
     // Send the resulting image to the output.
     outputStream.putFrame(mat);
@@ -92,8 +213,8 @@ public class CameraSwitch {
                         new Scalar(0, 0, 0));
 
     // Draw distance markers.
-    Imgproc.line(mat, new Point(50, 200), new Point(200, 50),
-                 new Scalar(0, 0, 255), 5);
+    //Imgproc.line(mat, new Point(50, 200), new Point(200, 50),
+    //             new Scalar(0, 0, 255), 5);
 
     // Send the resulting image to the output.
     outputStream.putFrame(mat);

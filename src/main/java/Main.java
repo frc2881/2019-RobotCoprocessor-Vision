@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +20,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.opencv.core.KeyPoint;
+import org.opencv.core.MatOfPoint;
 
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
@@ -29,10 +32,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
-
-import org.opencv.core.*;
 
 /*
    JSON format:
@@ -72,7 +72,6 @@ import org.opencv.core.*;
 public final class Main {
   private static String configFile = "/boot/frc.json";
 
-  @SuppressWarnings("MemberName")
   public static class CameraConfig {
     public String name;
     public String path;
@@ -128,7 +127,6 @@ public final class Main {
   /**
    * Read configuration file.
    */
-  @SuppressWarnings("PMD.CyclomaticComplexity")
   public static boolean readConfig() {
     // parse file
     JsonElement top;
@@ -229,6 +227,7 @@ public final class Main {
     NetworkTable table = ntinst.getTable("RPi");
     NetworkTableEntry numContours = table.getEntry("numContours");
     NetworkTableEntry numLines = table.getEntry("numLines");
+    NetworkTableEntry cargoInfo = table.getEntry("cargoInfo");
 
     // Start cameras.
     List<UsbCamera> cameras = new ArrayList<>();
@@ -257,8 +256,8 @@ public final class Main {
       camera2.setWhiteBalanceAuto();
     }
 
-    // Start image processing on camera 0 if present.
-    if (cameras.size() >= 1) {
+    // Start looking for vision targets on camera 0 if present.
+    if (camera0 != null) {
       VisionThread visionThread = new VisionThread(camera0,
         new GripPipeline(), pipeline -> {
           // Do something with pipeline results.
@@ -270,8 +269,24 @@ public final class Main {
       visionThread.start();
     }
 
+    // Start looking for cargo on camera 1 if present.
+    if (camera1 != null) {
+      VisionThread cargoThread = new VisionThread(camera1,
+        new CargoFinder(), pipeline -> {
+          KeyPoint[] blobs = pipeline.findBlobsOutput().toArray();
+          double[] blobInfo = new double[blobs.length * 3];
+          for (int i = 0; i < blobs.length; i++) {
+            blobInfo[i * 3] = blobs[i].pt.x;
+            blobInfo[(i * 3) + 1] = blobs[i].pt.y;
+            blobInfo[(i * 3) + 2] = blobs[i].size;
+          }
+          cargoInfo.setDoubleArray(blobInfo);
+      });
+      cargoThread.start();
+    }
+
     // Start camera switching between cameras 1 & 2 if present.
-    if (cameras.size() >= 3) {
+    if ((camera1 != null) && (camera2 != null)) {
       CameraSwitch cameraSwitch = new CameraSwitch();
       cameraSwitch.start(camera1, camera2);
     }

@@ -12,6 +12,14 @@ There are three cameras used:
 
 - Camera 2 is used as a rear-facing camera for the drivers.
 
+## Camera connections
+The three cameras are connected to the Raspberry Pi as follows:
+
+
+
+The cameras are configured in the FRCVision console using the USB port IDs to
+ensure that the camera list is consistently ordered.
+
 ## Vision processing
 The vision processing pipeline is generated using GRIP.  The GRIP source is in
 _VisionPipeline.grip_, and the generated Java code is stored into
@@ -70,3 +78,10 @@ To install the application onto the Raspberry Pi:
 > will likely lead to corruption of the file system (meaning it won't work the
 > next time the robot is powered on), and possibly cause permanent damage to
 > the SD card itself.
+
+## Saving streams
+`wget http://frcvision.local:1181/stream -O stream.mjpeg`
+
+    - or -
+
+`ffmpeg -f MJPEG -y -i http://frcvision.local:1181/stream -r 30 -q:v 1 stream.mjpeg`
