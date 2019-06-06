@@ -1,6 +1,8 @@
 # 2019Vision
-Raspberry Pi (via FRCVision 2019.2.1) vision code for the 2019 robot.  A
-Raspberry Pi 3 Model B+ is used on the robot.
+[OpenCV](https://opencv.org/) vision code for the 2019 robot (using
+[FRCVision 2019.2.1](https://github.com/wpilibsuite/FRCVision-pi-gen/releases/tag/v2019.2.1)
+running on a
+[Raspberry Pi 3 Model B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)).
 
 ## Cameras
 There are three cameras used:
@@ -12,38 +14,70 @@ There are three cameras used:
 
 - Camera 2 is used as a rear-facing camera for the drivers.
 
+All three cameras are
+[Microsoft LifeCam HD-3000](https://www.microsoft.com/accessories/en-us/products/webcams/lifecam-hd-3000/t3h-00011)
+cameras in custom enclosures.
+
 ## Camera connections
 The three cameras are connected to the Raspberry Pi as follows:
 
-
+![Camera Connections](rPi.jpg)
 
 The cameras are configured in the FRCVision console using the USB port IDs to
-ensure that the camera list is consistently ordered.
+ensure that the camera list is consistently ordered.  The resulting
+configuration (from `/boot/frc.json`) is found here ([frc.json](frc.json)).
 
-## Vision processing
-The vision processing pipeline is generated using GRIP.  The GRIP source is in
-_VisionPipeline.grip_, and the generated Java code is stored into
-_src/main/java/GripPipeline.java_.
+## Vision processing - GRIP
+[GRIP](https://wpiroboticsprojects.github.io/GRIP/#/) is used to generate
+vision processing pipelines.  It provides an easy, drag-and-drop interface to
+generating vision processing pipelines using OpenCV, optionally allowing the
+result of each step in the pipeline to be viewed in real-time.  When connected
+to the Raspberry Pi on the robot, it allows the live video feed from the
+robot's cameras to be processed within GRIP.
+
+When a new GRIP vision pipeline is generated, it will place the following
+import into the generated Java code:
+
+    import edu.wpi.first.wpilibj.vision.<class>;
+
+The application will fail to build (the latest release of GRIP is from January
+30, 2017, and is therefore a bit out of date with changes in the remainder of
+WPILib).  The `wpilibj` portion needs to be removed, like the following:
+
+    import edu.wpi.first.vision.<class>;
+
+After which the application will build with the new GRIP vision pipeline.
+
+Performing an organize imports (Alt-Shift-O) at the same time will greatly
+reduce the number of warnings displayed in the generated Java code.  There may
+still be some, such as the use of the now deprecated FeatureDetector if the
+Find Blobs filter is used.
+
+## Vision processing - Vision Targets
+This pipeline finds the vision targets on the field using the vision tracking
+camera (camera 0).  The GRIP source is in
+[VisionPipeline.grip](VisionPipeline.grip), and the generated Java code is
+stored into [src/main/java/GripPipeline.java](src/main/java/GripPipeline.java).
+The Java code should not be directly edited since those changes will get lost
+the next time GRIP is run and told to generate new code.
 
 Details need to be added...
 
-When a new GRIP pipeline is generated, it will place the following import into
-the _src/main/java/GripPipeline.java_ file:
+## Vision processing - Cargo
+The second pipeline finds cargo on the field using the forward-facing driver
+camera (camera 1).  The GRIP source is in [CargoFinder.grip](CargoFinder.grip),
+and the generated Java code is stored into
+[src/main/java/CargoFinder.java](src/main/java/CargoFinder.java).  Again, the
+Java code should not be directly edited since those changes will get lost the
+next time GRIP is run and told to generate new code.
 
-`import edu.wpi.first.wpilibj.vision.VisionPipeline;`
-
-The application will fail to build this way.  The `wpilibj` portion needs to be
-removed, like the following:
-
-`import edu.wpi.first.vision.VisionPipeline;`
-
-After which the application will build with the new GRIP pipeline.
+Details need to be added...
 
 ## Driver camera processing
 A fourth video stream is created from the two driver cameras; one of the two is
 selected based on the value of the _RPi.cameraForward_ network tables boolean;
-__true__ will pass the forward-facing camera and __false__ will pass the
-rear-facing camera.
+__true__ passes the forward-facing camera and __false__ passes the rear-facing
+camera.
 
 The forward-facing camera is rotated 90 degrees before being passed into the
 video stream, compensating for the rotated mounting of the camera.  This allows
@@ -51,12 +85,15 @@ the camera to provide a much longer field of view (in front of the robot) while
 still being able to see right in front of the robot (caused by the altitude of
 the mounting point).
 
-Marker lines are overlayed on the camera stream showing the path the robot will
-travel if moving straight and distance markers for 5', 10', and 15'.
+Marker lines are overlayed on the forward-facing camera when passed into the
+driver camera stream, showing the path the robot will travel if moving straight
+and distance markers for 6", 12", 18", 30", and 72".
 
 ## Bulding and installing
 Use `./gradlew assemble` to build the application.  The resulting jar will
-be located in _build/libs/2019Vision-all.jar_.
+be located in [build/libs/2019Vision-all.jar](build/libs/2019Vision-all.jar).
+In VS Code, there is a build task that will run this command; all that is
+needed is to press Cmd-Shift-B (or Ctrl-Shift-B).
 
 To install the application onto the Raspberry Pi:
 
