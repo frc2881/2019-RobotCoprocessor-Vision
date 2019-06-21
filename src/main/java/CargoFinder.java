@@ -26,7 +26,6 @@ import org.opencv.objdetect.*;
 public class CargoFinder implements VisionPipeline {
 
 	//Outputs
-	private Mat resizeImageOutput = new Mat();
 	private Mat blurOutput = new Mat();
 	private Mat hsvThresholdOutput = new Mat();
 	private Mat cvErodeOutput = new Mat();
@@ -41,31 +40,24 @@ public class CargoFinder implements VisionPipeline {
 	 * This is the primary method that runs the entire pipeline and updates the outputs.
 	 */
 	@Override	public void process(Mat source0) {
-		// Step Resize_Image0:
-		Mat resizeImageInput = source0;
-		double resizeImageWidth = 160.0;
-		double resizeImageHeight = 120.0;
-		int resizeImageInterpolation = Imgproc.INTER_CUBIC;
-		resizeImage(resizeImageInput, resizeImageWidth, resizeImageHeight, resizeImageInterpolation, resizeImageOutput);
-
 		// Step Blur0:
-		Mat blurInput = resizeImageOutput;
+		Mat blurInput = source0;
 		BlurType blurType = BlurType.get("Gaussian Blur");
-		double blurRadius = 5.405405405405405;
+		double blurRadius = 4.462009178990311;
 		blur(blurInput, blurType, blurRadius, blurOutput);
 
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = blurOutput;
-		double[] hsvThresholdHue = {132.73381294964028, 180.0};
-		double[] hsvThresholdSaturation = {4.586330935251798, 255.0};
-		double[] hsvThresholdValue = {121.53776978417265, 255.0};
+		double[] hsvThresholdHue = {0.0, 30.0};
+		double[] hsvThresholdSaturation = {93.64406779661016, 255.0};
+		double[] hsvThresholdValue = {230.50847457627117, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step CV_erode0:
 		Mat cvErodeSrc = hsvThresholdOutput;
 		Mat cvErodeKernel = new Mat();
 		Point cvErodeAnchor = new Point(-1, -1);
-		double cvErodeIterations = 3.0;
+		double cvErodeIterations = 6.0;
 		int cvErodeBordertype = Core.BORDER_CONSTANT;
 		Scalar cvErodeBordervalue = new Scalar(-1);
 		cvErode(cvErodeSrc, cvErodeKernel, cvErodeAnchor, cvErodeIterations, cvErodeBordertype, cvErodeBordervalue, cvErodeOutput);
@@ -74,7 +66,7 @@ public class CargoFinder implements VisionPipeline {
 		Mat cvDilateSrc = cvErodeOutput;
 		Mat cvDilateKernel = new Mat();
 		Point cvDilateAnchor = new Point(-1, -1);
-		double cvDilateIterations = 3.0;
+		double cvDilateIterations = 6.0;
 		int cvDilateBordertype = Core.BORDER_CONSTANT;
 		Scalar cvDilateBordervalue = new Scalar(-1);
 		cvDilate(cvDilateSrc, cvDilateKernel, cvDilateAnchor, cvDilateIterations, cvDilateBordertype, cvDilateBordervalue, cvDilateOutput);
@@ -82,18 +74,10 @@ public class CargoFinder implements VisionPipeline {
 		// Step Find_Blobs0:
 		Mat findBlobsInput = cvDilateOutput;
 		double findBlobsMinArea = 1.0;
-		double[] findBlobsCircularity = {0.8093525179856115, 1.0};
+		double[] findBlobsCircularity = {0.7244484532174816, 0.9994013722381971};
 		boolean findBlobsDarkBlobs = false;
 		findBlobs(findBlobsInput, findBlobsMinArea, findBlobsCircularity, findBlobsDarkBlobs, findBlobsOutput);
 
-	}
-
-	/**
-	 * This method is a generated getter for the output of a Resize_Image.
-	 * @return Mat output from Resize_Image.
-	 */
-	public Mat resizeImageOutput() {
-		return resizeImageOutput;
 	}
 
 	/**
@@ -136,19 +120,6 @@ public class CargoFinder implements VisionPipeline {
 		return findBlobsOutput;
 	}
 
-
-	/**
-	 * Scales and image to an exact size.
-	 * @param input The image on which to perform the Resize.
-	 * @param width The width of the output in pixels.
-	 * @param height The height of the output in pixels.
-	 * @param interpolation The type of interpolation.
-	 * @param output The image in which to store the output.
-	 */
-	private void resizeImage(Mat input, double width, double height,
-		int interpolation, Mat output) {
-		Imgproc.resize(input, output, new Size(width, height), 0.0, 0.0, interpolation);
-	}
 
 	/**
 	 * An indication of which type of filter to use for a blur.
