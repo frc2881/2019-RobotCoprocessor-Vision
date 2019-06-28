@@ -56,8 +56,8 @@ public class CargoFinder implements VisionPipeline {
 
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = blurOutput;
-		double[] hsvThresholdHue = {0.0, 30.0};
-		double[] hsvThresholdSaturation = {93.64406779661016, 255.0};
+		double[] hsvThresholdHue = {0.0, 42.0};
+		double[] hsvThresholdSaturation = {21.0, 255.0};
 		double[] hsvThresholdValue = {230.50847457627117, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
