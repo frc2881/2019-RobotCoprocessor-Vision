@@ -102,7 +102,7 @@ public class CameraSwitch {
     // 5"
     //Imgproc.line(mat, new Point(45, 269), new Point(275, 269),
     //             new Scalar(0, 255, 0), 1);
-    // 6"
+    // 18"
     Imgproc.line(mat, new Point(47, 262), new Point(272, 262),
                  new Scalar(0, 255, 0), 1);
     // 7"
@@ -120,7 +120,7 @@ public class CameraSwitch {
     // 11"
     //Imgproc.line(mat, new Point(54, 239), new Point(263, 239),
     //             new Scalar(0, 255, 0), 1);
-    // 12"
+    // 26"
     Imgproc.line(mat, new Point(56, 233), new Point(261, 233),
                  new Scalar(0, 255, 0), 1);
     // 13"
@@ -138,7 +138,7 @@ public class CameraSwitch {
     // 17"
     //Imgproc.line(mat, new Point(62, 214), new Point(253, 214),
     //             new Scalar(0, 255, 0), 1);
-    // 18"
+    // 34"
     Imgproc.line(mat, new Point(64, 209), new Point(252, 209),
                  new Scalar(0, 255, 0), 1);
     // 19"
@@ -159,7 +159,7 @@ public class CameraSwitch {
     // 24"
     //Imgproc.line(mat, new Point(70, 188), new Point(244, 188),
     //             new Scalar(0, 255, 0), 1);
-    // 30"
+    // 51"
     Imgproc.line(mat, new Point(75, 173), new Point(238, 173),
                  new Scalar(0, 255, 0), 1);
     // 36"
@@ -194,6 +194,9 @@ public class CameraSwitch {
                  new Scalar(255, 0, 0), 1);
     // Right diagonal
     Imgproc.line(mat, new Point(279, 279), new Point(172, 0),
+                 new Scalar(255, 0, 0), 1);
+
+    Imgproc.line(mat, new Point(159.5, 320), new Point(159.5, 0),
                  new Scalar(255, 0, 0), 1);
 
     // Send the resulting image to the output.

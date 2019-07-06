@@ -226,7 +226,7 @@ public final class Main {
 
     NetworkTable table = ntinst.getTable("RPi");
     NetworkTableEntry numContours = table.getEntry("numContours");
-    NetworkTableEntry numLines = table.getEntry("numLines");
+    NetworkTableEntry targetInfo = table.getEntry("targetInfo");
     NetworkTableEntry cargoInfo = table.getEntry("cargoInfo");
 
     // Start cameras.
@@ -256,15 +256,24 @@ public final class Main {
       camera2.setWhiteBalanceAuto();
     }
 
+    /*ArrayList<MatOfPoint> contours = pipeline.filterContoursOutput();
+          numContours.setDouble(contours.size());
+          */
+
     // Start looking for vision targets on camera 0 if present.
     if (camera0 != null) {
       VisionThread visionThread = new VisionThread(camera0,
         new GripPipeline(), pipeline -> {
           // Do something with pipeline results.
-          ArrayList<MatOfPoint> contours = pipeline.filterContoursOutput();
-          numContours.setDouble(contours.size());
           ArrayList<GripPipeline.Line> lines = pipeline.findLinesOutput();
-          numLines.setDouble(lines.size());
+          double[] lineInfo = new double[lines.size() * 4];
+          for (int i = 0; i < lines.size(); i ++){
+            lineInfo[i * 4] = lines.get(i).x1;
+            lineInfo[i * 4 + 1] = lines.get(i).y1;
+            lineInfo[i * 4 + 2] = lines.get(i).x2;
+            lineInfo[i * 4 + 3] = lines.get(i).y2;
+          }
+          targetInfo.setDoubleArray(lineInfo);
       });
       visionThread.start();
     }
@@ -284,6 +293,8 @@ public final class Main {
       });
       cargoThread.start();
     }
+
+    //camera 0 == vision, 1 is forward high, 2 front low
 
     // Start camera switching between cameras 1 & 2 if present.
     if ((camera1 != null) && (camera2 != null)) {
