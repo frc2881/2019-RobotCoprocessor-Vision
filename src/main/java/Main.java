@@ -203,8 +203,9 @@ public final class Main {
 
   /**
    * Main.
+ * @param <GripPipelineLine>
    */
-  public static void main(String... args) {
+  public static <GripPipelineLine> void main(String... args) {
     if (args.length > 0) {
       configFile = args[0];
     }
@@ -265,15 +266,14 @@ public final class Main {
       VisionThread visionThread = new VisionThread(camera0,
         new GripPipeline(), pipeline -> {
           // Do something with pipeline results.
-          ArrayList<GripPipeline.Line> lines = pipeline.findLinesOutput();
-          double[] lineInfo = new double[lines.size() * 4];
-          for (int i = 0; i < lines.size(); i ++){
-            lineInfo[i * 4] = lines.get(i).x1;
-            lineInfo[i * 4 + 1] = lines.get(i).y1;
-            lineInfo[i * 4 + 2] = lines.get(i).x2;
-            lineInfo[i * 4 + 3] = lines.get(i).y2;
+          KeyPoint[] blobs = pipeline.findBlobsOutput().toArray();
+          double[] blobInfo = new double[blobs.length * 3];
+          for (int i = 0; i < blobs.length; i++) {
+            blobInfo[i * 3] = blobs[i].pt.x;
+            blobInfo[(i * 3) + 1] = blobs[i].pt.y;
+            blobInfo[(i * 3) + 2] = blobs[i].size;
           }
-          targetInfo.setDoubleArray(lineInfo);
+          targetInfo.setDoubleArray(blobInfo);
       });
       visionThread.start();
     }
