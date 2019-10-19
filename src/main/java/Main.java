@@ -261,7 +261,7 @@ public final class Main {
           numContours.setDouble(contours.size());
           */
 
-    // Start looking for vision targets on camera 0 if present.
+    // Start looking for cargo on camera 0 if present.
     if (camera0 != null) {
       VisionThread visionThread = new VisionThread(camera0,
         new GripPipeline(), pipeline -> {
@@ -278,7 +278,7 @@ public final class Main {
       visionThread.start();
     }
 
-    // Start looking for cargo on camera 1 if present.
+    // Start looking for cargo on camera 1 if present. (NOT USED ON VISION TRACKING)
     if (camera1 != null) {
       VisionThread cargoThread = new VisionThread(camera1,
         new CargoFinder(), pipeline -> {
